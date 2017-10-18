@@ -20,10 +20,10 @@ void ofApp::setup(){
 	// ofDisableArbTex();
 	// ofEnableDepthTest();
 
-	cam.setDistance(300);
+	cam.setDistance(240);
 	ofSetCircleResolution(64);
 
-	model.loadModel("box.obj", false);
+	model.loadModel("high.obj", false);
 	// model.setPosition(ofGetWidth() * 0.5, (float)ofGetHeight() * 0.75 , 0);
 	
 	fbo.allocate(_w, _h);
@@ -31,7 +31,7 @@ void ofApp::setup(){
 		ofClear(255,255,255, 0);
 	fbo.end();
 
-	bRecording = false;
+	bRecording = true;
 }
 
 //--------------------------------------------------------------
@@ -45,6 +45,10 @@ void ofApp::update(){
 		fbo.readToPixels(pixels);
 		ofSaveImage(pixels, "sequence/"+ofToString(frameCounter, 4, '0')+".png");
 		frameCounter++;
+	}
+
+	if(counter > 359) {
+		bRecording = false;
 	}
 
 }
@@ -68,7 +72,7 @@ void ofApp::draw(){
 	// ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	// ofEnableDepthTest();
 	
-	ofSetColor(255, 0, 255, 255);
+	ofSetColor(0, 255, 0, 255);
 	// model.setPosition(ofGetWidth()/2, (float)ofGetHeight() * 0.75 , 0);
 	// model.setPosition(ofGetWidth()/2, (float)ofGetHeight() /2, 0);
 	// model.draw(OF_MESH_FILL); //same as model.drawFaces();
@@ -82,6 +86,7 @@ void ofApp::draw(){
 
 	stringstream ss;
 	ss << "FPS: " << ofGetFrameRate() << endl
+	<< counter << endl
 	<< (bRecording?"stop":"start") << " recording: r" << endl;
 	ofSetColor(0, 255, 0);
 	ofDrawBitmapString(ss.str(),15,15);
